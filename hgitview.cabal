@@ -34,7 +34,7 @@ executable hgitview
 
   build-depends:
     base
-    , brick >= 2.0 && < 2.2
+    , brick >= 1.9 && < 2.2
     , bytestring
     , containers
     , gitlib == 3.1.*
@@ -43,5 +43,5 @@ executable hgitview
     , text
     , time
     , vector
-    , vty >= 6.0 && < 6.1
+    , vty < 6.1
     
