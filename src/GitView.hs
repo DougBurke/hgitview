@@ -1,5 +1,6 @@
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeOperators #-}
 
 module Main (main) where
@@ -19,6 +20,7 @@ import qualified System.Info as SI
 import Brick.Widgets.Center (hCenter)
 import Brick.Widgets.Core ((<+>), hBox, vBox)
 
+import Control.Exception (try)
 import Control.Monad (void, when)
 
 import Data.List (intercalate, sortOn)
@@ -477,10 +479,15 @@ initCommitList cTime hash = do
 process :: String -> IO ()
 process commit = do
   cTime <-getCurrentTime
-  minit <- withRepository lgFactory "." $ initCommitList cTime commit
+
+  let getInit = initCommitList cTime commit
+      action = withRepository lgFactory "." getInit
+
+  minit <- try action
   case minit of
-    Just initVal -> view initVal
-    _ -> die $ "Unable to find commit " <> commit
+    Right (Just initVal) -> view initVal
+    Right _ -> die $ "Unable to find commit " <> commit
+    Left (e :: GitException) -> die $ show e
       
 
 view :: CommitList -> IO ()

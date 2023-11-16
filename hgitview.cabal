@@ -1,7 +1,7 @@
 cabal-version:  2.2
 
 name:         hgitview
-version:      0.1
+version:      0.2
 stability:    experimental
 synopsis:     Explore a GIT repository.
 description:
@@ -43,5 +43,5 @@ executable hgitview
     , text
     , time
     , vector
-    , vty < 6.1
+    , vty < 6.2
     
